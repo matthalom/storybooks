@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const connectDB = require('./config/db');
 const exphbs = require('express-handlebars');
 const morgan = require('morgan');
@@ -14,6 +15,9 @@ if (process.env.NODE_ENV === 'development') {
 // Setting up our Handlebars Templating Enging
 app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', '.hbs');
+
+// static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/', require('./routes/index.js'));

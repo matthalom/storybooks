@@ -5,11 +5,15 @@ const router = express.Router();
 // @route GET/
 
 router.get('/', (req, res) => {
-    res.render('login');
+    res.render('login', {
+        layout: 'login'
+    });
 });
 
 router.get('/dashboard', (req, res) => {
-    res.render('dashboard');
+    res.render('dashboard', {
+        layout: 'main'
+    });
 });
 
 module.exports = router;
