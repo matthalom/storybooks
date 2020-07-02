@@ -38,16 +38,30 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Setting up our Handlebars Templating Enging
-app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
-app.set('view engine', '.hbs');
+// Body Parser Middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
+// Handlebars Helper
+const { formatDate, stripTags, truncate } = require('./helpers/hbs');
 // static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Handlebars Templating Enging
+app.engine(
+    '.hbs',
+    exphbs({
+        defaultLayout: 'main',
+        extname: '.hbs',
+        helpers: { formatDate, stripTags, truncate }
+    })
+);
+app.set('view engine', '.hbs');
+
 // Routes
-app.use('/', require('./routes/index.js'));
-app.use('/auth', require('./routes/auth.js'));
+app.use('/', require('./routes/index'));
+app.use('/auth', require('./routes/auth'));
+app.use('/stories', require('./routes/stories'));
 
 // App is set up and we can begin listening
 const PORT = process.env.PORT || 5000;

@@ -1,34 +1,33 @@
 const mongoose = require('mongoose');
 
 const StorySchema = new mongoose.Schema({
-    Id: {
+    title: {
+        type: String,
+        required: true,
+        trim: true
+    },
+
+    body: {
         type: String,
         requied: true
     },
 
-    displayName: {
+    status: {
         type: String,
-        requied: true
+        default: 'public',
+        enum: ['public', 'private']
     },
 
-    firstName: {
-        type: String,
-        requied: true
+    user: {
+        type: mongoose.Schema.Types.ObjectID,
+        ref: 'User',
+        required: true
     },
 
-    lastName: {
-        type: String,
-        requied: true
-    },
-
-    image: {
-        type: String
-    },
-    
     createdAt: {
         type: Date,
         Default: Date.now
     }
-})
+});
 
-module.exports = mongoose.model('story', StorySchema);
+module.exports = mongoose.model('Story', StorySchema);
