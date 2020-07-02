@@ -38,12 +38,17 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(function(req, res, next) {
+    res.locals.user = req.user || null;
+    next();
+});
+
 // Body Parser Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Handlebars Helper
-const { formatDate, stripTags, truncate } = require('./helpers/hbs');
+const { formatDate, stripTags, truncate, editIcon } = require('./helpers/hbs');
 // static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -53,7 +58,7 @@ app.engine(
     exphbs({
         defaultLayout: 'main',
         extname: '.hbs',
-        helpers: { formatDate, stripTags, truncate }
+        helpers: { formatDate, stripTags, truncate, editIcon }
     })
 );
 app.set('view engine', '.hbs');
